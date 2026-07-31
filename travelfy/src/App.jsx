@@ -42,20 +42,32 @@ const CSS = `
   --ink:#1D1D1F;--ink2:#6E6E73;--line:#EBEBED;--hair:#F0F0F2;
   --accent:#007AFF;--accent-d:#0062CC;--ok:#34C759;--in:#E9E9EB;--app:#FFFFFF;
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Inter',system-ui,sans-serif;
-  color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:20px;padding:30px 16px;
+  color:var(--ink);
+  width:100%;
+  height:100vh;height:100svh;height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(8px,2vh,20px);padding:clamp(10px,2.5vh,30px) 16px;
   background:radial-gradient(120% 90% at 50% 0%, #eef0f3 0%, #dfe2e7 55%, #d3d7dd 100%);
+  overflow:auto;
 }
-.tf-stage{display:flex;flex-direction:column;align-items:center;gap:16px}
+.tf-stage{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2vh,16px);
+  height:100%;width:100%;justify-content:center;min-height:0}
 /* ── iPhone frame ──
-   Fixed sizing: width is capped by three constraints — the natural
-   384px design width, 92% of viewport width, and a viewport-height-
-   derived cap converted to width via the phone's true aspect ratio
-   (384:830). Height then follows automatically from aspect-ratio,
-   so the frame can never be squashed/stretched on short (laptop)
-   viewports the way independent width/height caps used to. */
+   Fully responsive: the frame's width is derived from whichever is
+   smallest — its natural 384px design size, 92% of the viewport
+   width, or the available viewport HEIGHT (minus the space the
+   footnote/gaps/padding need) converted to width via the phone's
+   true aspect ratio (384:830). Because the height-derived cap is
+   computed from the *actual remaining* vertical space (not a fixed
+   vh guess), the frame always fits fully on screen — short laptop
+   windows, tall phones, browser chrome eating into the viewport,
+   etc. — with no clipping and no separate fixed height to fight. */
 .tf-phone{
-  position:relative;width:min(384px,92vw,41.6vh);aspect-ratio:384/830;
+  position:relative;
+  flex:0 1 auto;
+  width:min(384px,92vw,calc((100dvh - 90px) * (384 / 830)));
+  aspect-ratio:384/830;
+  max-height:100%;
   background:#0A0A0C;border-radius:56px;padding:11px;
   box-shadow:0 2px 3px rgba(255,255,255,.35) inset,0 0 0 2px #23232a,
              0 50px 90px -30px rgba(20,24,32,.55),0 20px 40px -20px rgba(20,24,32,.4);
@@ -73,7 +85,7 @@ const CSS = `
 .tf-hs{font-size:11.5px;color:var(--ink2);display:flex;align-items:center;gap:5px;margin-top:-2px}
 .tf-live{width:6px;height:6px;border-radius:50%;background:var(--ok)}
 /* thread */
-.tf-thread{flex:1;overflow-y:auto;padding:16px 16px 6px;display:flex;flex-direction:column;gap:9px;background:var(--app)}
+.tf-thread{flex:1;min-height:0;overflow-y:auto;padding:16px 16px 6px;display:flex;flex-direction:column;gap:9px;background:var(--app)}
 .tf-thread::-webkit-scrollbar{width:0}
 .tf-b{max-width:78%;font-size:15px;line-height:1.42;padding:9px 14px;border-radius:20px;letter-spacing:-.01em}
 .tf-in{align-self:flex-start;background:var(--in);color:var(--ink);border-bottom-left-radius:7px}
@@ -166,7 +178,7 @@ const CSS = `
 /* home indicator */
 .tf-home{height:22px;flex:none;display:grid;place-items:center;background:rgba(255,255,255,.9)}
 .tf-home i{width:128px;height:5px;border-radius:980px;background:#1D1D1F}
-.tf-foot-note{font-size:12px;color:#8A8F98;letter-spacing:.01em}
+.tf-foot-note{flex:none;font-size:clamp(10px,1.6vh,12px);color:#8A8F98;letter-spacing:.01em;text-align:center}
 .tf-foot-note b{color:#4A4E57;font-weight:600}
 @media (prefers-reduced-motion:reduce){.tf-fade,.tf-typing i{animation:none}.tf-pill:active,.tf-snd:active{transform:none}}
 `;
