@@ -65,8 +65,8 @@ const CSS = `
 .tf-phone{
   position:relative;
   flex:0 1 auto;
-  width:min(432px,96vw,calc((100dvh - 90px) * (432 / 830)));
-  aspect-ratio:432/830;
+  width:min(450px,97vw,calc((100dvh - 90px) * (450 / 830)));
+  aspect-ratio:450/830;
   max-height:100%;
   background:#0B0B0D;border-radius:56px;padding:14px;
   box-shadow:0 50px 90px -30px rgba(11,27,43,.55),0 0 0 2px rgba(255,255,255,.06) inset;
@@ -178,9 +178,6 @@ const CSS = `
 .tf-snd{width:34px;height:34px;border-radius:50%;border:0;background:var(--blue);color:#fff;cursor:pointer;flex:none;display:grid;place-items:center;transition:.12s}
 .tf-snd:active{transform:scale(.92)}
 .tf-snd:disabled{opacity:.4;cursor:default}
-/* home indicator */
-.tf-home{height:22px;flex:none;display:grid;place-items:center;background:var(--white)}
-.tf-home i{width:120px;height:4px;border-radius:3px;background:var(--ink);opacity:.35}
 .tf-foot-note{flex:none;font-size:clamp(10px,1.6vh,12px);color:var(--ink-soft, #8A8F98);letter-spacing:.01em;text-align:center}
 .tf-foot-note b{color:#0B1B2B;font-weight:600}
 @media (prefers-reduced-motion:reduce){.tf-fade,.tf-typing i{animation:none}.tf-pill:active,.tf-snd:active{transform:none}}
@@ -274,7 +271,6 @@ export default function App() {
                   onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send(input)} aria-label="Message" />
                 <button className="tf-snd" onClick={() => send(input)} disabled={loading || !input.trim()} aria-label="Send"><SendI /></button>
               </div>
-              <div className="tf-home"><i /></div>
             </div>
           </div>
         </div>
