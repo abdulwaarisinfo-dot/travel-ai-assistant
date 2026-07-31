@@ -47,9 +47,15 @@ const CSS = `
   background:radial-gradient(120% 90% at 50% 0%, #eef0f3 0%, #dfe2e7 55%, #d3d7dd 100%);
 }
 .tf-stage{display:flex;flex-direction:column;align-items:center;gap:16px}
-/* ── iPhone frame ── */
+/* ── iPhone frame ──
+   Fixed sizing: width is capped by three constraints — the natural
+   384px design width, 92% of viewport width, and a viewport-height-
+   derived cap converted to width via the phone's true aspect ratio
+   (384:830). Height then follows automatically from aspect-ratio,
+   so the frame can never be squashed/stretched on short (laptop)
+   viewports the way independent width/height caps used to. */
 .tf-phone{
-  position:relative;width:min(384px,92vw);height:min(830px,90vh);
+  position:relative;width:min(384px,92vw,41.6vh);aspect-ratio:384/830;
   background:#0A0A0C;border-radius:56px;padding:11px;
   box-shadow:0 2px 3px rgba(255,255,255,.35) inset,0 0 0 2px #23232a,
              0 50px 90px -30px rgba(20,24,32,.55),0 20px 40px -20px rgba(20,24,32,.4);
