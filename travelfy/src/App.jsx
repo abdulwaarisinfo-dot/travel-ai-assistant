@@ -48,7 +48,7 @@ const CSS = `
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:clamp(8px,2vh,20px);padding:clamp(10px,2.5vh,30px) 16px;
   background:#DCE6EF;
-  overflow:auto;
+  overflow:hidden;
 }
 .tf-stage{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2vh,16px);
   height:100%;width:100%;justify-content:center;min-height:0}
@@ -65,7 +65,7 @@ const CSS = `
 .tf-phone{
   position:relative;
   flex:0 1 auto;
-  width:min(450px,97vw,calc((100dvh - 90px) * (450 / 830)));
+  width:min(450px,95vw,calc((100dvh - 90px) * (450 / 830)));
   aspect-ratio:450/830;
   max-height:100%;
   background:#0B0B0D;border-radius:56px;padding:14px;
