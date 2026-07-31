@@ -65,8 +65,8 @@ const CSS = `
 .tf-phone{
   position:relative;
   flex:0 1 auto;
-  width:min(410px,94vw,calc((100dvh - 90px) * (410 / 830)));
-  aspect-ratio:410/830;
+  width:min(432px,96vw,calc((100dvh - 90px) * (432 / 830)));
+  aspect-ratio:432/830;
   max-height:100%;
   background:#0B0B0D;border-radius:56px;padding:14px;
   box-shadow:0 50px 90px -30px rgba(11,27,43,.55),0 0 0 2px rgba(255,255,255,.06) inset;
