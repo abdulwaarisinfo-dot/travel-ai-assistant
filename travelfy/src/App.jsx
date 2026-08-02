@@ -18,7 +18,7 @@ HOTELS   : destination, check-in, check-out, guests → "hotel_results" → trav
 UMRAH    : departure city, dates or duration, pax → "umrah_packages" → traveller "form" (add Passport no.) → payment "form" → "booking_confirmation".
 CANCEL/REFUND : ask for the booking reference (or show their most recent) → "manage_booking" → on confirm, show "refund_summary" with honest penalty maths (fare paid − cancellation fee = refund), method and ETA.
 
-MULTIPLE PASSENGERS/GUESTS: if pax > 1, collect traveller details ONE PASSENGER AT A TIME, and EVERY passenger's details MUST be collected via an actual "form" widget — never ask for a passenger's details in plain text or with quick_replies alone. After passenger 1's form is submitted, immediately reply with a NEW "form" widget titled "Traveller Details — Passenger 2 of N" (increment N to match total pax), with the same fields as passenger 1. Repeat until all passengers are collected, THEN move to the payment "form". Do not skip straight to payment while any passenger's form is still outstanding.
+MULTIPLE PASSENGERS/GUESTS: if pax > 1, collect ALL passengers in ONE "form" widget using its "sections" array — one section per passenger, each with a short "title" (e.g. "Passenger 1", "Passenger 2") and its own "fields" (Full Name, Email, Phone, [Passport Number if Umrah]). Every field across every section needs a unique "name" (e.g. p1_name, p1_email, p2_name, p2_email...). One "submitLabel" submits all sections at once. Title the whole form "Traveller Details — N Passengers". Never ask for a second/third passenger's info in plain text or in a separate turn — it must always be inside this one form's sections.
 
 STYLE: replies are calm and short (1–2 sentences), plain text, no markdown, no emoji. Prices in USD unless asked. One clear next step at a time.
 
@@ -30,7 +30,8 @@ Widgets:
 - hotel_results:  {"options":[{"id","name","location","rating","pricePerNight","nights","total","currency","amenities":["Wi-Fi"]}]}
 - umrah_packages: {"options":[{"id","name","nights","makkahHotel","madinahHotel","distance","price","currency","includes":["Visa"]}]}
 - options: {"options":[{"id","title","subtitle","price","currency"}]}
-- form:    {"title","fields":[{"name","label","type":"text|email|tel|date|number","placeholder"}],"submitLabel"}
+- form:    {"title","fields":[{"name","label","type":"text|email|tel|date|number","placeholder"}],"submitLabel"}   // single-person forms
+           OR for multiple people: {"title","sections":[{"title","fields":[{"name","label","type","placeholder"}]}],"submitLabel"}
 - booking_confirmation: {"kind":"Flight|Hotel|Umrah","reference","status":"Confirmed","lines":[{"label","value"}],"total","currency"}
 - manage_booking: {"reference","kind","title","date","status","price","currency","actions":["Cancel booking","Modify dates"]}
 - refund_summary: {"reference","lines":[{"label","value"}],"refundAmount","currency","method","eta"}
@@ -135,6 +136,9 @@ const CSS = `
 /* form */
 .tf-form{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;display:flex;flex-direction:column;gap:11px}
 .tf-ftitle{font-size:13px;font-weight:600;letter-spacing:-.01em;margin-bottom:1px}
+.tf-fsection{display:flex;flex-direction:column;gap:11px}
+.tf-fsection + .tf-fsection{margin-top:2px;padding-top:13px;border-top:1px solid var(--hair)}
+.tf-fsub{font-size:11.5px;font-weight:600;color:var(--accent);letter-spacing:.01em;text-transform:uppercase}
 .tf-field label{font-size:11px;color:var(--ink2);font-weight:500;display:block;margin-bottom:5px}
 .tf-field input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;font-size:14px;
   font-family:inherit;color:var(--ink);outline:none;transition:.14s;background:#FBFBFC}
@@ -409,17 +413,27 @@ function Widget({ w, onAction, disabled }) {
 
 function FormW({ d, onAction, disabled }) {
   const [vals, setVals] = useState({});
-  const fields = d.fields || [];
-  const submit = () => onAction(fields.map((f) => `${f.label}: ${vals[f.name] || "—"}`).join(", "));
+  // Backward compatible: plain {fields:[...]} still works as a single section.
+  // New: {sections:[{title,fields:[...]}, ...]} renders each as its own
+  // visually-separated block (e.g. "Passenger 1", "Passenger 2"), but all
+  // fields submit together with one button press.
+  const sections = d.sections && d.sections.length ? d.sections : [{ title: null, fields: d.fields || [] }];
+  const allFields = sections.flatMap((s) => s.fields || []);
+  const submit = () => onAction(allFields.map((f) => `${f.label}: ${vals[f.name] || "—"}`).join(", "));
   return (
     <div className="tf-w tf-fade">
       <div className="tf-form">
         {d.title && <div className="tf-ftitle">{d.title}</div>}
-        {fields.map((f, i) => (
-          <div className="tf-field" key={i}>
-            <label>{f.label}</label>
-            <input type={f.type || "text"} placeholder={f.placeholder || ""} value={vals[f.name] || ""}
-              disabled={disabled} onChange={(e) => setVals((v) => ({ ...v, [f.name]: e.target.value }))} />
+        {sections.map((sec, si) => (
+          <div className="tf-fsection" key={si}>
+            {sec.title && <div className="tf-fsub">{sec.title}</div>}
+            {(sec.fields || []).map((f, i) => (
+              <div className="tf-field" key={f.name || i}>
+                <label>{f.label}</label>
+                <input type={f.type || "text"} placeholder={f.placeholder || ""} value={vals[f.name] || ""}
+                  disabled={disabled} onChange={(e) => setVals((v) => ({ ...v, [f.name]: e.target.value }))} />
+              </div>
+            ))}
           </div>
         ))}
         <button className="tf-pill" style={{ alignSelf: "flex-end", marginTop: 2 }} disabled={disabled} onClick={submit}>{d.submitLabel || "Continue"}</button>
