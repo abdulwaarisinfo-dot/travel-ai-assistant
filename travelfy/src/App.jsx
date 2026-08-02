@@ -28,7 +28,7 @@ ALWAYS reply with ONE JSON object and nothing else — no backticks, no text out
 Widgets:
 - flight_results: {"options":[{"id","airline","flightNo","fromCode","toCode","depart","arrive","duration","stops","price","currency","tag"}]}   // tag optional: "Cheapest"/"Fastest"
 - hotel_results:  {"options":[{"id","name","location","rating","pricePerNight","nights","total","currency","amenities":["Wi-Fi"]}]}
-- umrah_packages: {"options":[{"id","name","nights","makkahHotel","madinahHotel","distance","price","currency","includes":["Visa"]}]}
+- umrah_packages: {"options":[{"id","name","nights","makkahHotel","madinahHotel","distance","price","currency","includes":["Visa"]}]}   // distance = proximity of the Makkah hotel to Haram ONLY, short value like "150m" or "1.2km" — never a nights breakdown or any other text
 - options: {"options":[{"id","title","subtitle","price","currency"}]}
 - form:    {"title","fields":[{"name","label","type":"text|email|tel|date|number","placeholder"}],"submitLabel"}   // single-person forms
            OR for multiple people: {"title","sections":[{"title","fields":[{"name","label","type","placeholder"}]}],"submitLabel"}
