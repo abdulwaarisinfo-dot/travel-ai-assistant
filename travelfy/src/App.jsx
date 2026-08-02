@@ -207,9 +207,12 @@ export default function App() {
     const history = next.filter((m) => !m.intro)
       .map((m) => ({ role: m.role, content: m.text || (m.role === "assistant" ? "(showed options)" : "…") }));
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      // Calls OUR OWN backend (/api/chat), which holds the real Anthropic
+      // API key server-side (see backend/main.py) and forwards the request
+      // to Claude Haiku 4.5. The key is never exposed to the browser.
+      const res = await fetch("/api/chat", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-6", max_tokens: 1000, system: SYSTEM, messages: history }),
+        body: JSON.stringify({ system: SYSTEM, messages: history }),
       });
       const data = await res.json();
       const txt = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
