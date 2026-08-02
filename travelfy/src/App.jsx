@@ -36,150 +36,132 @@ Widgets:
 Max 4 options so the JSON stays small. Only add a widget when it advances the booking.`;
 
 const CSS = `
-.tf *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+.tf *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 .tf{
-  --blue:#007AFF;--blue-deep:#0060CC;--pale:#F2F8FE;--white:#FFFFFF;
-  --ink:#0B1B2B;--ink-soft:rgba(11,27,43,0.5);--line:rgba(11,27,43,0.08);
-  --gold:#FF9F0A;--bubble-in:#EDEFF2;--ok:#34C759;
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Inter,Roboto,sans-serif;
-  color:var(--ink);
-  width:100%;
-  height:100vh;height:100svh;height:100dvh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:clamp(8px,2vh,20px);padding:clamp(10px,2.5vh,30px) 16px;
-  background:#DCE6EF;
-  overflow:hidden;
+  --ink:#1D1D1F;--ink2:#6E6E73;--line:#EBEBED;--hair:#F0F0F2;
+  --accent:#007AFF;--accent-d:#0062CC;--ok:#34C759;--in:#E9E9EB;--app:#FFFFFF;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Inter',system-ui,sans-serif;
+  color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;padding:30px 16px;
+  background:radial-gradient(120% 90% at 50% 0%, #eef0f3 0%, #dfe2e7 55%, #d3d7dd 100%);
 }
-.tf-stage{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2vh,16px);
-  height:100%;width:100%;justify-content:center;min-height:0}
-/* ── iPhone frame ──
-   Fully responsive: the frame's width is derived from whichever is
-   smallest — its natural 384px design size, 92% of the viewport
-   width, or the available viewport HEIGHT (minus the space the
-   footnote/gaps/padding need) converted to width via the phone's
-   true aspect ratio (384:830). Because the height-derived cap is
-   computed from the *actual remaining* vertical space (not a fixed
-   vh guess), the frame always fits fully on screen — short laptop
-   windows, tall phones, browser chrome eating into the viewport,
-   etc. — with no clipping and no separate fixed height to fight. */
+.tf-stage{display:flex;flex-direction:column;align-items:center;gap:16px}
+/* ── iPhone frame ── */
 .tf-phone{
-  position:relative;
-  flex:0 1 auto;
-  width:min(450px,95vw,calc((100dvh - 90px) * (450 / 830)));
-  aspect-ratio:450/830;
-  max-height:100%;
-  background:#0B0B0D;border-radius:56px;padding:14px;
-  box-shadow:0 50px 90px -30px rgba(11,27,43,.55),0 0 0 2px rgba(255,255,255,.06) inset;
+  position:relative;width:min(384px,92vw);height:min(830px,90vh);
+  background:#0A0A0C;border-radius:56px;padding:11px;
+  box-shadow:0 2px 3px rgba(255,255,255,.35) inset,0 0 0 2px #23232a,
+             0 50px 90px -30px rgba(20,24,32,.55),0 20px 40px -20px rgba(20,24,32,.4);
 }
-.tf-phone::before{content:"";position:absolute;left:-3px;top:14%;width:3px;height:3.4%;background:#161618;border-radius:2px 0 0 2px}
-.tf-phone::after{content:"";position:absolute;left:-3px;top:20.5%;width:3px;height:6.3%;background:#161618;border-radius:2px 0 0 2px}
-.tf-power{position:absolute;right:-3px;top:18%;width:3px;height:8.4%;background:#161618;border-radius:0 2px 2px 0}
-.tf-screen{position:relative;width:100%;height:100%;background:var(--pale);border-radius:42px;overflow:hidden;display:flex;flex-direction:column}
-.tf-island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:100px;height:28px;background:#000;border-radius:20px;z-index:40}
+.tf-screen{position:relative;width:100%;height:100%;background:var(--app);border-radius:46px;overflow:hidden;display:flex;flex-direction:column}
+.tf-island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:33px;background:#000;border-radius:20px;z-index:40}
 /* status bar */
-.tf-status{height:47px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 6px;font-size:14px;font-weight:600;color:var(--ink);background:var(--white);z-index:30}
-.tf-status .r{display:flex;align-items:center;gap:4px}
+.tf-status{height:52px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 7px;font-size:14px;font-weight:600;letter-spacing:.02em;z-index:30}
+.tf-status .r{display:flex;align-items:center;gap:6px}
 /* app header */
-.tf-app{flex:1;display:flex;flex-direction:column;min-height:0;background:var(--white)}
-.tf-head{flex:none;padding:18px 16px 16px;border-bottom:1px solid var(--line);
-  display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--white);z-index:20}
-.tf-ava{width:56px;height:56px;border-radius:50%;background:#15171A;color:#fff;display:grid;place-items:center;flex:none}
-.tf-hn{font-size:19px;font-weight:700;letter-spacing:-.2px;margin-top:2px}
-.tf-hs{font-size:13px;color:var(--ink-soft);display:flex;align-items:center;gap:6px}
-.tf-live{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none}
+.tf-head{flex:none;padding:6px 18px 12px;border-bottom:1px solid var(--hair);
+  display:flex;flex-direction:column;align-items:center;gap:5px;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);z-index:20}
+.tf-ava{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center}
+.tf-hn{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.tf-hs{font-size:11.5px;color:var(--ink2);display:flex;align-items:center;gap:5px;margin-top:-2px}
+.tf-live{width:6px;height:6px;border-radius:50%;background:var(--ok)}
 /* thread */
-.tf-thread{flex:1;min-height:0;overflow-y:auto;padding:14px 12px 10px;display:flex;flex-direction:column;gap:10px;background:var(--white)}
+.tf-thread{flex:1;overflow-y:auto;padding:16px 16px 6px;display:flex;flex-direction:column;gap:9px;background:var(--app)}
 .tf-thread::-webkit-scrollbar{width:0}
-.tf-b{max-width:82%;font-size:15.5px;line-height:1.38;padding:9px 14px;border-radius:18px}
-.tf-in{align-self:flex-start;background:var(--bubble-in);color:var(--ink);border-bottom-left-radius:5px}
-.tf-out{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:5px}
+.tf-b{max-width:78%;font-size:15px;line-height:1.42;padding:9px 14px;border-radius:20px;letter-spacing:-.01em}
+.tf-in{align-self:flex-start;background:var(--in);color:var(--ink);border-bottom-left-radius:7px}
+.tf-out{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:7px}
 .tf-fade{animation:tff .3s cubic-bezier(.22,.61,.36,1)}
 @keyframes tff{from{opacity:0;transform:translateY(7px) scale(.98)}to{opacity:1;transform:none}}
 /* cards */
-.tf-w{align-self:flex-start;width:92%;display:flex;flex-direction:column;gap:8px}
-.tf-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:12px 13px;
-  box-shadow:0 1px 3px rgba(11,27,43,.06)}
-.tf-tag{font-size:10.5px;font-weight:600;color:var(--blue);letter-spacing:.01em;margin-bottom:6px;display:inline-block}
-.tf-flh{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
-.tf-air{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
-.tf-sub{font-size:11.5px;color:var(--ink-soft)}
+.tf-w{align-self:flex-start;width:88%;display:flex;flex-direction:column;gap:8px}
+.tf-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 15px;
+  box-shadow:0 1px 2px rgba(20,24,32,.04)}
+.tf-tag{font-size:10.5px;font-weight:600;color:var(--accent);letter-spacing:.01em;margin-bottom:6px;display:inline-block}
+.tf-flh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tf-air{font-size:13px;font-weight:600;letter-spacing:-.01em}
+.tf-sub{font-size:11.5px;color:var(--ink2)}
 .tf-route{display:flex;align-items:center;gap:12px}
 .tf-node{text-align:center}
 .tf-node .c{font-size:19px;font-weight:700;letter-spacing:-.02em}
-.tf-node .t{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.tf-node .t{font-size:11px;color:var(--ink2);margin-top:2px}
 .tf-conn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
 .tf-conn .ln{width:100%;height:1px;background:var(--line);position:relative}
 .tf-conn .ln svg{position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:#fff;padding:0 4px}
-.tf-conn .d{font-size:10.5px;color:var(--ink-soft)}
-.tf-flb{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
-.tf-price{font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--blue-deep)}
-.tf-price small{font-size:11px;font-weight:500;color:var(--ink-soft);letter-spacing:0}
-.tf-pill{border:0;background:var(--blue);color:#fff;font-family:inherit;font-size:13px;font-weight:600;
-  padding:9px 17px;border-radius:20px;cursor:pointer;transition:transform .1s,background .15s;letter-spacing:-.01em}
+.tf-conn .d{font-size:10.5px;color:var(--ink2)}
+.tf-flb{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:12px;border-top:1px solid var(--hair)}
+.tf-price{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.tf-price small{font-size:11px;font-weight:500;color:var(--ink2);letter-spacing:0}
+.tf-pill{border:0;background:var(--accent);color:#fff;font-family:inherit;font-size:13px;font-weight:600;
+  padding:8px 17px;border-radius:980px;cursor:pointer;transition:transform .1s,background .15s;letter-spacing:-.01em}
 .tf-pill:active{transform:scale(.96)}
-.tf-pill:hover{background:var(--blue-deep)}
+.tf-pill:hover{background:var(--accent-d)}
 .tf-pill:disabled{opacity:.4}
 /* hotel/umrah */
 .tf-htop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:9px}
 .tf-hname{font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
-.tf-hloc{font-size:12px;color:var(--ink-soft);margin-top:3px}
-.tf-stars{font-size:11.5px;color:var(--gold);white-space:nowrap;font-weight:600}
+.tf-hloc{font-size:12px;color:var(--ink2);margin-top:3px}
+.tf-stars{font-size:11px;color:#F5A623;white-space:nowrap;font-weight:600}
 .tf-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2px}
-.tf-chipmini{font-size:10.5px;color:var(--ink-soft);background:var(--pale);padding:4px 9px;border-radius:20px}
+.tf-chipmini{font-size:10.5px;color:var(--ink2);background:#F5F5F7;padding:4px 9px;border-radius:980px}
 /* confirmation / refund */
-.tf-vou{background:var(--white);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 18px -10px rgba(11,27,43,.2)}
-.tf-vtop{padding:15px 16px 13px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line)}
+.tf-vou{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 4px 18px -10px rgba(20,24,32,.2)}
+.tf-vtop{padding:15px 16px 13px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--hair)}
 .tf-mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
 .tf-vtop .kk{font-size:14px;font-weight:600;letter-spacing:-.01em}
-.tf-vtop .rr{font-size:11.5px;color:var(--ink-soft);margin-top:2px;letter-spacing:.03em}
+.tf-vtop .rr{font-size:11.5px;color:var(--ink2);margin-top:2px;letter-spacing:.03em}
 .tf-vbody{padding:13px 16px 15px;display:flex;flex-direction:column;gap:9px}
 .tf-vl{display:flex;justify-content:space-between;gap:14px;font-size:13px}
-.tf-vl .l{color:var(--ink-soft)}.tf-vl .v{font-weight:500;text-align:right;letter-spacing:-.01em}
-.tf-vtot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:11px;border-top:1px solid var(--line)}
-.tf-vtot .l{font-size:12px;color:var(--ink-soft)}
-.tf-vtot .v{font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--blue-deep)}
-.tf-badge{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px}
+.tf-vl .l{color:var(--ink2)}.tf-vl .v{font-weight:500;text-align:right;letter-spacing:-.01em}
+.tf-vtot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:11px;border-top:1px solid var(--hair)}
+.tf-vtot .l{font-size:12px;color:var(--ink2)}
+.tf-vtot .v{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.tf-badge{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:980px}
 .tf-badge.ok{color:var(--ok);background:rgba(52,199,89,.12)}
 /* manage */
 .tf-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}
-.tf-ghost{border:1.5px solid var(--blue);background:var(--white);color:var(--blue);font-family:inherit;font-size:12.5px;font-weight:600;
-  padding:9px 15px;border-radius:20px;cursor:pointer;transition:.12s;letter-spacing:-.01em}
-.tf-ghost:hover{background:var(--blue);color:#fff}
-.tf-ghost.warn{border-color:#FF3B30;color:#FF3B30}
-.tf-ghost.warn:hover{background:#FF3B30;color:#fff}
+.tf-ghost{border:1px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:600;
+  padding:9px 15px;border-radius:980px;cursor:pointer;transition:.12s;letter-spacing:-.01em}
+.tf-ghost:hover{background:#F5F5F7}
+.tf-ghost.warn{color:#FF3B30}
+.tf-ghost.warn:hover{background:rgba(255,59,48,.08)}
 /* options */
 .tf-opt{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
 .tf-opt .ott{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
-.tf-opt .ost{font-size:12px;color:var(--ink-soft);margin-top:2px}
+.tf-opt .ost{font-size:12px;color:var(--ink2);margin-top:2px}
 /* form */
-.tf-form{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:15px;display:flex;flex-direction:column;gap:11px}
+.tf-form{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;display:flex;flex-direction:column;gap:11px}
 .tf-ftitle{font-size:13px;font-weight:600;letter-spacing:-.01em;margin-bottom:1px}
-.tf-field label{font-size:11px;color:var(--ink-soft);font-weight:500;display:block;margin-bottom:5px}
-.tf-field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:14px;
-  font-family:inherit;color:var(--ink);outline:none;transition:.14s;background:var(--pale)}
-.tf-field input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3.5px rgba(0,122,255,.12)}
-.tf-field input::placeholder{color:var(--ink-soft)}
+.tf-field label{font-size:11px;color:var(--ink2);font-weight:500;display:block;margin-bottom:5px}
+.tf-field input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;font-size:14px;
+  font-family:inherit;color:var(--ink);outline:none;transition:.14s;background:#FBFBFC}
+.tf-field input:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3.5px rgba(0,122,255,.12)}
+.tf-field input::placeholder{color:#B7B7BC}
 /* quick replies */
-.tf-qr{align-self:flex-start;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:92%;margin:2px 0 4px}
-.tf-qchip{border:1.5px solid var(--blue);background:var(--white);color:var(--blue);font-family:inherit;font-size:13.5px;font-weight:600;
-  padding:11px 10px;border-radius:20px;text-align:center;cursor:pointer;transition:.14s;letter-spacing:-.01em;line-height:1.25}
-.tf-qchip:hover,.tf-qchip:active{background:var(--blue);color:#fff}
+.tf-qr{align-self:flex-start;display:flex;flex-wrap:wrap;gap:7px;margin:3px 0 4px 2px}
+.tf-qchip{border:1px solid var(--accent);background:#fff;color:var(--accent);font-family:inherit;font-size:13px;font-weight:500;
+  padding:7px 14px;border-radius:980px;cursor:pointer;transition:.14s;letter-spacing:-.01em}
+.tf-qchip:hover{background:var(--accent);color:#fff}
 /* typing */
-.tf-typing{align-self:flex-start;background:var(--bubble-in);border-radius:18px;border-bottom-left-radius:5px;padding:12px 15px;display:flex;gap:4px}
-.tf-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-soft);animation:tft 1.2s infinite ease-in-out}
-.tf-typing i:nth-child(2){animation-delay:.15s}.tf-typing i:nth-child(3){animation-delay:.3s}
-@keyframes tft{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+.tf-typing{align-self:flex-start;background:var(--in);border-radius:20px;border-bottom-left-radius:7px;padding:13px 15px;display:flex;gap:5px}
+.tf-typing i{width:7px;height:7px;border-radius:50%;background:#B0B0B6;animation:tft 1.15s infinite}
+.tf-typing i:nth-child(2){animation-delay:.14s}.tf-typing i:nth-child(3){animation-delay:.28s}
+@keyframes tft{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
 /* composer */
-.tf-foot{flex:none;padding:8px 10px;background:var(--white);border-top:1px solid var(--line);display:flex;align-items:center;gap:8px}
-.tf-foot input{flex:1;border:1px solid var(--line);background:var(--pale);border-radius:20px;padding:9px 16px;
-  font-size:15px;font-family:inherit;outline:none;color:var(--ink);min-width:0}
-.tf-foot input:focus{border-color:var(--blue)}
-.tf-foot input::placeholder{color:var(--ink-soft)}
-.tf-snd{width:34px;height:34px;border-radius:50%;border:0;background:var(--blue);color:#fff;cursor:pointer;flex:none;display:grid;place-items:center;transition:.12s}
+.tf-foot{flex:none;padding:8px 14px 8px;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);border-top:1px solid var(--hair)}
+.tf-inp{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:980px;padding:5px 5px 5px 16px}
+.tf-inp:focus-within{border-color:#D7D7DB}
+.tf-inp input{flex:1;border:0;outline:none;background:transparent;font-size:15px;font-family:inherit;color:var(--ink);padding:6px 0;letter-spacing:-.01em}
+.tf-inp input::placeholder{color:#B0B0B6}
+.tf-snd{width:33px;height:33px;border-radius:50%;border:0;background:var(--accent);color:#fff;cursor:pointer;flex:none;display:grid;place-items:center;transition:.12s}
 .tf-snd:active{transform:scale(.92)}
-.tf-snd:disabled{opacity:.4;cursor:default}
-.tf-foot-note{flex:none;font-size:clamp(10px,1.6vh,12px);color:var(--ink-soft, #8A8F98);letter-spacing:.01em;text-align:center}
-.tf-foot-note b{color:#0B1B2B;font-weight:600}
+.tf-snd:disabled{background:#D7D7DB;cursor:default}
+/* home indicator */
+.tf-home{height:22px;flex:none;display:grid;place-items:center;background:rgba(255,255,255,.9)}
+.tf-home i{width:128px;height:5px;border-radius:980px;background:#1D1D1F}
+.tf-foot-note{font-size:12px;color:#8A8F98;letter-spacing:.01em}
+.tf-foot-note b{color:#4A4E57;font-weight:600}
 @media (prefers-reduced-motion:reduce){.tf-fade,.tf-typing i{animation:none}.tf-pill:active,.tf-snd:active{transform:none}}
 `;
 
@@ -187,10 +169,10 @@ const CSS = `
 const Plane = ({ s = 13, c = "#007AFF" }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L11 19v-5.5z"/></svg>);
 const Check = ({ s = 17 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>);
 const Undo = ({ s = 16 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg>);
-const SendI = () => (<svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M4 20L20 12L4 4L4 10L14 12L4 14L4 20Z" fill="white"/></svg>);
-const Sig = () => (<svg width="17" height="11" viewBox="0 0 17 11" fill="none"><path d="M1 8L1 10L2 10L2 8L1 8Z" fill="currentColor"/><path d="M4.5 6L4.5 10L5.5 10L5.5 6L4.5 6Z" fill="currentColor"/><path d="M8 3.5L8 10L9 10L9 3.5L8 3.5Z" fill="currentColor"/><path d="M11.5 1L11.5 10L12.5 10L12.5 1L11.5 1Z" fill="currentColor"/></svg>);
-const Wifi = () => (<svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 0C4.4 0 1.7 1.3 0 3.4L1.5 4.9C2.9 3.2 5.1 2.1 7.5 2.1C9.9 2.1 12.1 3.2 13.5 4.9L15 3.4C13.3 1.3 10.6 0 7.5 0Z" fill="currentColor" opacity="0.35"/><path d="M7.5 4C5.9 4 4.5 4.7 3.5 5.9L5 7.4C5.6 6.6 6.5 6.1 7.5 6.1C8.5 6.1 9.4 6.6 10 7.4L11.5 5.9C10.5 4.7 9.1 4 7.5 4Z" fill="currentColor"/></svg>);
-const Batt = () => (<svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x="1" y="1" width="19" height="9" rx="2" stroke="currentColor" strokeOpacity="0.4"/><rect x="2.5" y="2.5" width="15" height="6" rx="1" fill="currentColor"/><rect x="21" y="3.5" width="1.5" height="4" rx="0.7" fill="currentColor" opacity="0.4"/></svg>);
+const SendI = () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>);
+const Sig = () => (<svg width="17" height="11" viewBox="0 0 18 12" fill="#1D1D1F"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>);
+const Wifi = () => (<svg width="16" height="12" viewBox="0 0 16 12" fill="#1D1D1F"><path d="M8 11.2 9.9 9A2.6 2.6 0 0 0 8 8.2 2.6 2.6 0 0 0 6.1 9zM8 2.2c2.3 0 4.4.9 6 2.4l-1.3 1.5A6.6 6.6 0 0 0 8 4.2 6.6 6.6 0 0 0 3.3 6.1L2 4.6A8.6 8.6 0 0 1 8 2.2z"/><path d="M8 5.2c1.5 0 2.9.6 3.9 1.6L10.6 8.3A3.7 3.7 0 0 0 8 7.2a3.7 3.7 0 0 0-2.6 1.1L4.1 6.8A5.6 5.6 0 0 1 8 5.2z"/></svg>);
+const Batt = () => (<svg width="26" height="12" viewBox="0 0 26 12"><rect x="1" y="1" width="21" height="10" rx="3" fill="none" stroke="#1D1D1F" strokeOpacity=".4"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.6" fill="#1D1D1F"/><rect x="23" y="4" width="2" height="4" rx="1" fill="#1D1D1F" fillOpacity=".4"/></svg>);
 
 const stars = (r) => "★".repeat(Math.max(0, Math.round(r || 4))) + (r ? "  " + r : "");
 const money = (v, c) => v == null ? "" : ((c === "USD" || !c) ? "$" : "") + Number(v).toLocaleString() + ((c === "USD" || !c) ? "" : " " + c);
@@ -225,12 +207,9 @@ export default function App() {
     const history = next.filter((m) => !m.intro)
       .map((m) => ({ role: m.role, content: m.text || (m.role === "assistant" ? "(showed options)" : "…") }));
     try {
-      // NOTE: this calls OUR OWN backend (/api/chat), which holds the real
-      // Anthropic API key server-side and forwards the request. It does NOT
-      // call api.anthropic.com directly from the browser.
-      const res = await fetch("/api/chat", {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ system: SYSTEM, messages: history }),
+        body: JSON.stringify({ model: "claude-sonnet-4-6", max_tokens: 1000, system: SYSTEM, messages: history }),
       });
       const data = await res.json();
       const txt = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
@@ -246,7 +225,6 @@ export default function App() {
       <style>{CSS}</style>
       <div className="tf-stage">
         <div className="tf-phone">
-          <div className="tf-power" />
           <div className="tf-screen">
             <div className="tf-island" />
             <div className="tf-status">
@@ -254,27 +232,27 @@ export default function App() {
               <span className="r"><Sig /><Wifi /><Batt /></span>
             </div>
 
-            <div className="tf-app">
-              <div className="tf-head">
-                <div className="tf-ava"><Plane s={26} c="#fff" /></div>
-                <div className="tf-hn">{BRAND.name}</div>
-                <div className="tf-hs"><span className="tf-live" /> {BRAND.handle} · online</div>
-              </div>
+            <div className="tf-head">
+              <div className="tf-ava"><Plane s={19} c="#fff" /></div>
+              <div className="tf-hn">{BRAND.name}</div>
+              <div className="tf-hs"><span className="tf-live" /> {BRAND.handle} · online</div>
+            </div>
 
-              <div className="tf-thread" ref={thread}>
-                {msgs.map((m, i) => <Msg key={i} m={m} onAction={send} disabled={loading} />)}
-                {loading && <div className="tf-typing tf-fade"><i /><i /><i /></div>}
-              </div>
+            <div className="tf-thread" ref={thread}>
+              {msgs.map((m, i) => <Msg key={i} m={m} onAction={send} disabled={loading} />)}
+              {loading && <div className="tf-typing tf-fade"><i /><i /><i /></div>}
+            </div>
 
-              <div className="tf-foot">
+            <div className="tf-foot">
+              <div className="tf-inp">
                 <input value={input} placeholder="Message" disabled={loading}
                   onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send(input)} aria-label="Message" />
                 <button className="tf-snd" onClick={() => send(input)} disabled={loading || !input.trim()} aria-label="Send"><SendI /></button>
               </div>
             </div>
+            <div className="tf-home"><i /></div>
           </div>
         </div>
-        <div className="tf-foot-note">Live AI demo · <b>{BRAND.name}</b> — white-label for any agency</div>
       </div>
     </div>
   );
